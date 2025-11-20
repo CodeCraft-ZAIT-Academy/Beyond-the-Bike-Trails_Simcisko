@@ -1,0 +1,21 @@
+.NAZOV {
+    color: blue;
+    font-size: 20px;
+
+}
+
+.IMAGE {
+    text-align: center;
+    margin-top: 20px;
+    width:200px;
+;
+}
+.header {
+    font-weight: bold;
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+    background-color: lightpink;
+    height: 100px;
+    width: 500px;
+}
