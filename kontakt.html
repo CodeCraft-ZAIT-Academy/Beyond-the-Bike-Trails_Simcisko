@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <title>Kontakt | Beyond the Bike Trails</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        .top-bar {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            padding: 1rem 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.04);
+        }
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            }
+        :root {
+            --primary: #2d6a4f; --dark: #1b4332; --bg: #f8f9fa; --white: #ffffff;
+            --text: #2d3436; --shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background: var(--bg); color: var(--text); padding-top: 80px; }
+
+        .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 1.5fr; gap: 40px; }
+
+        /* CONTACT INFO */
+        .contact-info { background: var(--dark); color: white; padding: 40px; border-radius: 30px; box-shadow: var(--shadow); }
+        .contact-info h2 { margin-bottom: 20px; font-size: 2rem; }
+        .info-item { margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
+
+        /* FORM */
+        .contact-form { background: white; padding: 40px; border-radius: 30px; box-shadow: var(--shadow); }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.9rem; }
+        input, textarea { width: 100%; padding: 12px 15px; border: 1px solid #e0e0e0; border-radius: 12px; font-size: 1rem; outline: none; transition: 0.3s; }
+        input:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(45, 106, 79, 0.1); }
+        .btn-submit { background: var(--primary); color: white; border: none; padding: 15px 30px; border-radius: 100px; font-weight: 800; cursor: pointer; width: 100%; transition: 0.3s; }
+        .btn-submit:hover { background: var(--dark); transform: translateY(-2px); }
+
+        @media (max-width: 768px) { .container { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <header class="top-bar">
+    <div class="logo-area">
+        <div class="menu-icon" id="menuBtn">☰</div>
+        <h1 style="font-size: 1.1rem; font-weight: 800; color: var(--dark); letter-spacing: 1px;">BTB TRAILS</h1>
+    </div>
+    <nav class="side-menu" id="sideMenu">
+    <a href="index.html">Domov</a>
+    <a href="trasy.html">Trasy</a>
+    <a href="kontakt.html">Kontakt</a>
+</nav>
+</nav>
+</header>
+    <div class="container">
+        <div class="contact-info">
+            <h2>Napíšte nám</h2>
+            <p style="opacity: 0.8; margin-bottom: 30px;">Máte otázku k trasám alebo chcete pridať tú svoju? Sme tu pre vás.</p>
+            <div class="info-item"><span>📍</span> Čierne, Slovensko</div>
+            <div class="info-item"><span>📧</span> info_beyondtrails@gmail.com</div>
+            <div class="info-item"><span>📞</span> +421 900 358</div>
+        </div>
+        <div class="contact-form">
+            <form action="#">
+                <div class="form-group">
+                    <label>Vaše meno</label>
+                    <input type="text" placeholder="Janko Hraško" required>
+                </div>
+                <div class="form-group">
+                    <label>E-mail</label>
+                    <input type="email" placeholder="janko@priklad.sk" required>
+                </div>
+                <div class="form-group">
+                    <label>Správa</label>
+                    <textarea rows="5" placeholder="Ako vám môžeme pomôcť?" required></textarea>
+                </div>
+                <button type="submit" class="btn-submit">ODOSLAŤ SPRÁVU</button>
+            </form>
+        </div>
+    </div>
+    <div class="card" style="margin-top:22px">
+  <h4 style="margin-bottom:10px">Kde nás nájdete – Obec Čierne</h4>
+
+  <iframe
+    src="https://www.google.com/maps?q=Čierne,+Slovakia&output=embed"
+    width="100%"
+    height="320"
+    style="border:0; border-radius:10px;"
+    allowfullscreen=""
+    loading="lazy"
+    referrerpolicy="no-referrer-when-downgrade">
+  </iframe>
+</div>
+    </div>
+    <script>
+        
+   const menuBtn = document.getElementById('menuBtn');
+    const sideMenu = document.getElementById('sideMenu');
+    const overlay = document.getElementById('overlay');
+
+    function toggleMenu() {
+        sideMenu.classList.toggle('open');
+        overlay.classList.toggle('active');
+    }
+     menuBtn.addEventListener('click', toggleMenu);
+    overlay.addEventListener('click', toggleMenu);
+
+    
+    document.querySelectorAll('.side-menu a').forEach(link => {
+        link.addEventListener('click', () => {
+            
+            sideMenu.classList.remove('open');
+            overlay.classList.remove('active');
+        });
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <title>Trasy | Beyond the Bike Trails</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2d6a4f; --dark: #1b4332; --bg: #f8f9fa; --white: #ffffff;
+            --text: #2d3436; --shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background: var(--bg); color: var(--text); padding: 40px 20px; }
+
+        .header-section { text-align: center; margin-bottom: 50px; }
+        .header-section h1 { font-size: 2.5rem; color: var(--dark); margin-bottom: 10px; }
+
+        
+        .filters { display: flex; justify-content: center; gap: 10px; margin-bottom: 40px; flex-wrap: wrap; }
+        .filter-btn { padding: 10px 20px; border-radius: 50px; border: none; background: white; cursor: pointer; font-weight: 600; transition: 0.3s; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .filter-btn.active { background: var(--primary); color: white; }
+
+     
+        .trasy-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        
+        .route-card { background: white; border-radius: 25px; overflow: hidden; box-shadow: var(--shadow); transition: 0.3s; position: relative; }
+        .route-card:hover { transform: translateY(-8px); }
+        .route-img { height: 200px; width: 100%; object-fit: cover; }
+        
+        .badge { position: absolute; top: 15px; right: 15px; padding: 5px 12px; border-radius: 50px; font-size: 0.7rem; font-weight: 800; color: white; text-transform: uppercase; }
+        .easy-bg { background: #2ecc71; }
+        .hard-bg { background: #e74c3c; }
+
+        .route-content { padding: 25px; }
+        .route-meta { display: flex; justify-content: space-between; margin-top: 15px; font-size: 0.85rem; color: #636e72; font-weight: 600; }
+        
+        .btn-detail { display: block; text-align: center; margin-top: 20px; padding: 12px; border: 2px solid var(--primary); color: var(--primary); text-decoration: none; border-radius: 12px; font-weight: 700; transition: 0.3s; }
+        .btn-detail:hover { background: var(--primary); color: white; }
+
+        .filter-select {
+    padding: 12px 20px;
+    border-radius: 12px;
+    border: 2px solid var(--primary);
+    background: white;
+    font-weight: 600;
+    color: var(--dark);
+    outline: none;
+    cursor: pointer;
+}
+
+.filter-select:focus {
+    box-shadow: 0 0 0 4px rgba(45, 106, 79, 0.2);
+}
+    </style>
+</head>
+<body>
+    <div class="header-section">
+        <h1>Všetky traily</h1>
+        <p>Vyberte si</p>
+    </div>
+
+    <div class="filters">
+        <button class="filter-btn active">Všetky</button>
+        <button class="filter-btn">Začiatočník</button>
+        <button class="filter-btn">Pokročilý</button>
+        <button class="filter-btn">Expert</button>
+    </div>
+<div class="header-section">
+    <h1>Všetky cyklotrasy</h1>
+    <p>Vyberte si trasu podľa vašej kondície a lokality.</p>
+</div>
+
+<div class="filters-container" style="text-align: center; margin-bottom: 30px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; padding: 0 20px;">
+    
+    <select id="filter-okres" class="filter-select">
+        <option value="all">Všetky okresy (SK/CZ)</option>
+        <optgroup label="Slovensko">
+            <option value="zilina">Žilina</option>
+            <option value="bratislava">Bratislava</option>
+            <option value="poprad">Poprad</option>
+        </optgroup>
+        <optgroup label="Česko">
+            <option value="praha">Praha</option>
+            <option value="ostrava">Ostrava</option>
+        </optgroup>
+    </select>
+
+    <select id="filter-level" class="filter-select">
+        <option value="all">Všetky náročnosti</option>
+        <option value="zaciatocnik">Začiatočník</option>
+        <option value="pokrocily">Pokročilý</option>
+        <option value="expert">Expert</option>
+    </select>
+
+</div>
+
+<div class="trasy-grid">
+    </div>
+    <div class="trasy-grid">
+        <div class="route-card">
+            <div class="route-card" data-okres="zilina" data-level="zaciatocnik">
+    <span class="badge easy-bg">Začiatočník</span>
+    </div>
+            <span class="badge easy-bg">Začiatočník</span>
+            <img src="https://images.unsplash.com/photo-1473773508845-188df298d2d1" class="route-img" alt="Trasa">
+            <div class="route-content">
+                <h3>Les</h3>
+                <p>okolo lesa.</p>
+                <div class="route-meta">
+                    <span>📏 15km</span>
+                    <span>⛰️ 20m</span>
+                    <span>⭐ 4.8</span>
+                </div>
+                <a href="trasa.les.html" class="btn-detail">Zobraziť detaily</a>
+            </div>
+        </div>
+
+        <div class="route-card">
+            <div class="route-card" data-okres="praha" data-level="expert">
+    <span class="badge hard-bg">Expert</span>
+    </div>
+            <span class="badge hard-bg">Pokročilý</span>
+            <img src="https://kamnahory.sk/images/pr/horsky-bicykel.jpg" class="route-img" alt="Trasa">
+            <div class="route-content">
+                <h3>Hory</h3>
+                <p>Technický terén pre horské bicykle.</p>
+                <div class="route-meta">
+                    <span>📏 42km</span>
+                    <span>⛰️ 1200m</span>
+                    <span>⭐ 5.0</span>
+                </div>
+                <a href="#" class="btn-detail">Zobraziť detaily</a>
+            </div>
+        </div>
+        
+        </div>
+        <script>
+    const filterOkres = document.getElementById('filter-okres');
+    const filterLevel = document.getElementById('filter-level');
+    const cards = document.querySelectorAll('.route-card');
+
+    function filterRoutes() {
+        const selectedOkres = filterOkres.value;
+        const selectedLevel = filterLevel.value;
+
+        cards.forEach(card => {
+            const cardOkres = card.getAttribute('data-okres');
+            const cardLevel = card.getAttribute('data-level');
+
+            // Logika: Zobraz kartu len ak sa zhoduje okres AJ náročnosť (alebo je vybraté "all")
+            const matchesOkres = (selectedOkres === 'all' || selectedOkres === cardOkres);
+            const matchesLevel = (selectedLevel === 'all' || selectedLevel === cardLevel);
+
+            if (matchesOkres && matchesLevel) {
+                card.style.display = 'block'; // Zobraziť
+            } else {
+                card.style.display = 'none'; // Schovať
+            }
+        });
+    }
+
+    filterOkres.addEventListener('change', filterRoutes);
+    filterLevel.addEventListener('change', filterRoutes);
+</script>
+</body>
+</html>
