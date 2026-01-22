@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="sk">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Beyond the Bike Trails | Vaše traily na jednom mieste</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #2d6a4f;
+            --primary-light: #40916c;
+            --accent: #d4e09b;
+            --dark: #1b4332;
+            --text: #2d3436;
+            --bg: #f8f9fa;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding-top: 80px;
+        }
+
+
+        .top-bar {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            padding: 1rem 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.04);
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .menu-icon {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark);
+        }
+
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 300px;
+            height: 100%;
+            background: var(--dark);
+            padding: 100px 40px;
+            transition: var(--transition);
+            z-index: 1001;
+        }
+
+        .side-menu.open {
+            left: 0;
+        }
+
+        .side-menu a {
+            display: block;
+            padding: 15px 0;
+            color: var(--white);
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 600;
+            transition: var(--transition);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .side-menu a:hover {
+            color: var(--accent);
+            transform: translateX(10px);
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            display: none;
+            z-index: 1000;
+            backdrop-filter: blur(2px);
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+
+        .hero {
+            position: relative;
+            height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--white);
+            overflow: hidden;
+            margin-top: -80px;
+        }
+
+        .hero img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            filter: brightness(0.4);
+        }
+
+        .hero h2 {
+            font-size: clamp(2.5rem, 7vw, 4.5rem);
+            font-weight: 800;
+            margin-bottom: 20px;
+            letter-spacing: -2px;
+        }
+
+
+        .content {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            margin-bottom: 40px;
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--dark);
+            text-align: center;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+
+        .card {
+            background: var(--white);
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-img {
+            height: 240px;
+            overflow: hidden;
+        }
+
+        .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .card:hover img {
+            transform: scale(1.05);
+        }
+
+        .card-body {
+            padding: 30px;
+            flex-grow: 1;
+        }
+
+        .difficulty-tag {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        .easy {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .medium {
+            background: #fff3e0;
+            color: #ef6c00;
+        }
+
+        .hard {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .route-stats {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+            padding: 15px 0;
+            border-top: 1px solid #f0f0f0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .rating {
+            color: #f1c40f;
+            margin-bottom: 10px;
+        }
+
+
+        .equipment-section {
+            margin-top: 100px;
+            background: var(--white);
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        .eq-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .eq-table th {
+            text-align: left;
+            padding: 15px;
+            border-bottom: 2px solid var(--bg);
+            color: var(--dark);
+            font-weight: 800;
+        }
+
+        .eq-table td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .status {
+            font-weight: 800;
+            font-size: 0.8rem;
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+
+        .must {
+            background: #ffe3e3;
+            color: #e03131;
+        }
+
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            margin-top: 80px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="overlay" id="overlay"></div>
+
+    <header class="top-bar">
+        <div class="logo-area">
+            <div class="menu-icon" id="menuBtn">☰</div>
+            <a href="index.html" style="text-decoration: none;">
+                <h1 style="font-size: 1.1rem; font-weight: 800; color: var(--dark); letter-spacing: 1px;">BTB TRAILS
+                </h1>
+            </a>
+        </div>
+    </header>
+
+    <nav class="side-menu" id="sideMenu">
+        <a href="index.html">Domov</a>
+        <a href="trasy.html">Trasy</a>
+        <a href="kontakt.html">Kontakt</a>
+        <a href="galeria.html">Galeria</a>
+    </nav>
+
+    <section class="hero">
+        <img src="https://www.canyon.com/on/demandware.static/-/Library-Sites-canyon-shared/default/dw56cfd2a4/images/blog/Mountain/best-place-to-mtb-london-swinley-forest.jpg"
+            alt="Cyklistika">
+        <div class="hero-content">
+            <h2>Beyond the Bike Trails</h2>
+            <p style="font-size: 1.3rem; font-weight: 400; opacity: 0.9;">Preskúmaj kompletný zoznam trailov na
+                Slovensku a Česku.</p>
+        </div>
+    </section>
+
+    <main class="content">
+        <h2 class="section-title">Odporúčané trasy</h2>
+
+        <div class="info-grid">
+            <div class="card">
+                <div class="card-img">
+                    <img src="https://foto.mtbiker.sk/Trasy/2025/najlepsie_mtb_jazdenie_u_nas/03_1756562626.jpg"
+                        alt="Jablunkov">
+                </div>
+                <div class="card-body">
+                    <span class="difficulty-tag easy">Začiatočník</span>
+                    <h3>Lesík v Jablunkove</h3>
+                    <div class="rating">★★★★☆</div>
+                    <div class="route-stats">
+                        <span>📏 12 km</span>
+                        <span>⏱️ 45 min</span>
+                        <span>⛰️ 50m</span>
+                    </div>
+                    <p>Nenáročná cesta cez les s minimálnym prevýšením.</p>
+                    <a href="trasa-jablunkov.html"
+                        style="display: block; text-align: center; padding: 12px; border: 2px solid var(--primary); color: var(--primary); text-decoration: none; border-radius: 12px; font-weight: 700; margin-top: 15px; transition: 0.3s;">
+                        Zobraziť detaily
+                    </a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-img">
+                    <img src="https://www.mtnlovers.sk/kniznica/Paganella/P8170049%20(247).jpg" alt="Kubínska Hola">
+                </div>
+                <div class="card-body">
+                    <span class="difficulty-tag medium">Pokročilý</span>
+                    <h3>Kubínska Hola</h3>
+                    <div class="rating">★★★★★</div>
+                    <div class="route-stats">
+                        <span>📏 34 km</span>
+                        <span>⏱️ 2.5 h</span>
+                        <span>⛰️ 420m</span>
+                    </div>
+                    <p>Skvelá kombinácia hôr a lesných ciest s výhľadmi.</p>
+                    <a href="trasa-kubinska.html"
+                        style="display: block; text-align: center; padding: 12px; border: 2px solid var(--primary); color: var(--primary); text-decoration: none; border-radius: 12px; font-weight: 700; margin-top: 15px; transition: 0.3s;">
+                        Zobraziť detaily
+                    </a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-img">
+                    <img src="https://contenderbicycles.com/cdn/shop/articles/IMG_5104_1_44702178-c513-4b22-ba4b-dc234d69ea68.jpg?v=1717051985&width=1600"
+                        alt="Karpaty">
+                </div>
+                <div class="card-body">
+                    <span class="difficulty-tag hard">Expert</span>
+                    <h3>Malé Karpaty</h3>
+                    <div class="rating">★★★★☆</div>
+                    <div class="route-stats">
+                        <span>📏 68 km</span>
+                        <span>⏱️ 5.0 h</span>
+                        <span>⛰️ 1850m</span>
+                    </div>
+                    <p>Strmé stúpania a technické zjazdy pre expertov.</p>
+                    <a href="trasa-karpaty.html"
+                        style="display: block; text-align: center; padding: 12px; border: 2px solid var(--primary); color: var(--primary); text-decoration: none; border-radius: 12px; font-weight: 700; margin-top: 15px; transition: 0.3s;">
+                        Zobraziť detaily
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="equipment-section">
+            <h2 style="color: var(--dark); font-weight: 800;">Povinná výbava bicykla</h2>
+            <p style="color: #666; margin-bottom: 20px;">Predtým než vyrazíš na trail, skontroluj si svoju výbavu.</p>
+            <table class="eq-table">
+                <tr>
+                    <th>Komponenty</th>
+                    <th>Popis</th>
+                    <th>Dôležitosť</th>
+                </tr>
+                <tr>
+                    <td>Brzdy</td>
+                    <td>Hlavne funkčné brzdy</td>
+                    <td><span class="status must">Povinné</span></td>
+                </tr>
+                <tr>
+                    <td>Svetlá</td>
+                    <td>Biele vpredu, červené vzadu</td>
+                    <td><span class="status must">Povinné</span></td>
+                </tr>
+                <tr>
+                    <td>Náhradne lepenie</td>
+                    <td>Vždy sa zíde pri nečakanom defekte</td>
+                    <td><span class="status must">Povinné</span></td>
+                </tr>
+                <tr>
+                    <td>Prilba</td>
+                    <td>Ochranná prilba všade</td>
+                    <td><span class="status must">Povinné</span></td>
+                </tr>
+            </table>
+        </div>
+    </main>
+
+    <footer>
+        <p style="font-weight: 800; margin-bottom: 10px;">BEYOND THE BIKE TRAILS</p>
+        <p>Viac info tu: </p>
+        <p onclick="window.open('https://www.mtbiker.sk/','_blank')"
+            style="cursor: pointer; text-decoration: underline;">www.mtbiker.sk
+        </p>
+        <p style="opacity: 0.6; font-size: 0.9rem;">© 2026 Všetky práva vyhradené. Jazdite bezpečne!</p>
+    </footer>
+
+    <script>
+        const menuBtn = document.getElementById('menuBtn');
+        const sideMenu = document.getElementById('sideMenu');
+        const overlay = document.getElementById('overlay');
+
+        function toggleMenu() {
+            sideMenu.classList.toggle('open');
+            overlay.classList.toggle('active');
+        }
+
+        menuBtn.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', toggleMenu);
+    </script>
+
+</body>
+
+</html>

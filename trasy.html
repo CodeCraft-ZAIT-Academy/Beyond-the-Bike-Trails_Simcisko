@@ -1,167 +1,701 @@
 <!DOCTYPE html>
 <html lang="sk">
+
 <head>
     <meta charset="UTF-8">
     <title>Trasy | Beyond the Bike Trails</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap"
+        rel="stylesheet">
+
     <style>
         :root {
-            --primary: #2d6a4f; --dark: #1b4332; --bg: #f8f9fa; --white: #ffffff;
-            --text: #2d3436; --shadow: 0 10px 30px rgba(0,0,0,0.08);
+            --primary: #2d6a4f;
+            --primary-light: #40916c;
+            --accent: #d4e09b;
+            --dark: #1b4332;
+            --text: #2d3436;
+            --bg: #f8f9fa;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background: var(--bg); color: var(--text); padding: 40px 20px; }
 
-        .header-section { text-align: center; margin-bottom: 50px; }
-        .header-section h1 { font-size: 2.5rem; color: var(--dark); margin-bottom: 10px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
 
-        
-        .filters { display: flex; justify-content: center; gap: 10px; margin-bottom: 40px; flex-wrap: wrap; }
-        .filter-btn { padding: 10px 20px; border-radius: 50px; border: none; background: white; cursor: pointer; font-weight: 600; transition: 0.3s; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .filter-btn.active { background: var(--primary); color: white; }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding-top: 80px;
+        }
 
-     
-        .trasy-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
-        
-        .route-card { background: white; border-radius: 25px; overflow: hidden; box-shadow: var(--shadow); transition: 0.3s; position: relative; }
-        .route-card:hover { transform: translateY(-8px); }
-        .route-img { height: 200px; width: 100%; object-fit: cover; }
-        
-        .badge { position: absolute; top: 15px; right: 15px; padding: 5px 12px; border-radius: 50px; font-size: 0.7rem; font-weight: 800; color: white; text-transform: uppercase; }
-        .easy-bg { background: #2ecc71; }
-        .hard-bg { background: #e74c3c; }
 
-        .route-content { padding: 25px; }
-        .route-meta { display: flex; justify-content: space-between; margin-top: 15px; font-size: 0.85rem; color: #636e72; font-weight: 600; }
-        
-        .btn-detail { display: block; text-align: center; margin-top: 20px; padding: 12px; border: 2px solid var(--primary); color: var(--primary); text-decoration: none; border-radius: 12px; font-weight: 700; transition: 0.3s; }
-        .btn-detail:hover { background: var(--primary); color: white; }
+        .top-bar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            padding: 1rem 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.04);
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .menu-icon {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark);
+            padding: 5px;
+        }
+
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -320px;
+            width: 300px;
+            height: 100%;
+            background: var(--dark);
+            padding: 100px 40px;
+            transition: var(--transition);
+            z-index: 1001;
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .side-menu.open {
+            left: 0;
+        }
+
+        .side-menu a {
+            display: block;
+            padding: 15px 0;
+            color: var(--white);
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 600;
+            transition: var(--transition);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .side-menu a:hover {
+            color: var(--accent);
+            transform: translateX(10px);
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            display: none;
+            z-index: 1000;
+            backdrop-filter: blur(2px);
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+
+        .header-section {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(rgba(27, 67, 50, 0.8), rgba(27, 67, 50, 0.8)),
+                url('https://images.unsplash.com/photo-1544191696-102dbdaeeaa0?auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header-section h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+
+        .filters-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+            padding: 0 20px;
+        }
 
         .filter-select {
-    padding: 12px 20px;
-    border-radius: 12px;
-    border: 2px solid var(--primary);
-    background: white;
-    font-weight: 600;
-    color: var(--dark);
-    outline: none;
-    cursor: pointer;
-}
+            padding: 12px 20px;
+            border-radius: 12px;
+            border: 2px solid var(--primary);
+            background: white;
+            font-weight: 600;
+            color: var(--dark);
+            outline: none;
+            cursor: pointer;
+            min-width: 250px;
+            transition: var(--transition);
+            font-size: 1rem;
+        }
 
-.filter-select:focus {
-    box-shadow: 0 0 0 4px rgba(45, 106, 79, 0.2);
-}
+
+        .trasy-grid {
+            max-width: 1200px;
+            margin: 0 auto 80px;
+            display: grid;
+
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            padding: 0 20px;
+        }
+
+        .route-card {
+            background: var(--white);
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            border: 1px solid rgba(0, 0, 0, 0.02);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .route-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .route-img {
+            height: 220px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: white;
+            text-transform: uppercase;
+            z-index: 10;
+        }
+
+        .easy-bg {
+            background: #2e7d32;
+        }
+
+        .medium-bg {
+            background: #ef6c00;
+        }
+
+        .hard-bg {
+            background: #c62828;
+        }
+
+        .route-content {
+            padding: 30px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .route-content p {
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .route-meta {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+            padding: 15px 0;
+            border-top: 1px solid #f0f0f0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .btn-detail {
+            display: block;
+            text-align: center;
+            padding: 12px;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 700;
+            transition: 0.3s;
+            margin-top: auto;
+        }
+
+        .btn-detail:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+
+
+        @media (max-width: 768px) {
+
+
+            body {
+                padding-top: 60px;
+            }
+
+            .top-bar {
+                padding: 0.8rem 5%;
+            }
+
+            .header-section {
+                padding: 40px 15px;
+            }
+
+            .header-section h1 {
+                font-size: 1.8rem;
+            }
+
+
+            .filter-select {
+                width: 100%;
+                min-width: unset;
+            }
+
+
+            .trasy-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+
+
+            .side-menu {
+                width: 85%;
+                max-width: 300px;
+            }
+
+            .side-menu a {
+                padding: 18px 0;
+                font-size: 1.3rem;
+            }
+        }
+
+
+        @media (max-width: 380px) {
+            .logo-area h1 {
+                font-size: 0.9rem !important;
+            }
+
+            .route-meta {
+                font-size: 0.8rem;
+            }
+        }
     </style>
 </head>
+
 <body>
+
+    <div class="overlay" id="overlay"></div>
+
+    <header class="top-bar">
+        <div class="logo-area">
+            <div class="menu-icon" id="menuBtn">☰</div>
+            <div>
+                <h1 style="font-size: 1.1rem; font-weight: 800; color: var(--dark); letter-spacing: 1px; margin:0;">BTB
+                    TRAILS</h1>
+                <h1 style="font-size: 1rem; color: black; margin:0;">TRASY</h1>
+            </div>
+        </div>
+    </header>
+
+    <nav class="side-menu" id="sideMenu">
+        <a href="index.html">Domov</a>
+        <a href="trasy.html">Trasy</a>
+        <a href="kontakt.html">Kontakt</a>
+        <a href="galeria.html">Galeria</a>
+    </nav>
+
     <div class="header-section">
-        <h1>Všetky traily</h1>
-        <p>Vyberte si</p>
+        <h1>Všetky cyklotrasy</h1>
+        <p>Preskúmajte najlepšie traily na Slovensku a v Česku.</p>
     </div>
 
-    <div class="filters">
-        <button class="filter-btn active">Všetky</button>
-        <button class="filter-btn">Začiatočník</button>
-        <button class="filter-btn">Pokročilý</button>
-        <button class="filter-btn">Expert</button>
+    <div class="filters-container">
+        <select id="filter-level" class="filter-select">
+            <option value="all">Všetky náročnosti</option>
+            <option value="zaciatocnik">Začiatočník</option>
+            <option value="pokrocily">Pokročilý</option>
+            <option value="expert">Expert</option>
+        </select>
     </div>
-<div class="header-section">
-    <h1>Všetky cyklotrasy</h1>
-    <p>Vyberte si trasu podľa vašej kondície a lokality.</p>
-</div>
 
-<div class="filters-container" style="text-align: center; margin-bottom: 30px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; padding: 0 20px;">
-    
-    <select id="filter-okres" class="filter-select">
-        <option value="all">Všetky okresy (SK/CZ)</option>
-        <optgroup label="Slovensko">
-            <option value="zilina">Žilina</option>
-            <option value="bratislava">Bratislava</option>
-            <option value="poprad">Poprad</option>
-        </optgroup>
-        <optgroup label="Česko">
-            <option value="praha">Praha</option>
-            <option value="ostrava">Ostrava</option>
-        </optgroup>
-    </select>
-
-    <select id="filter-level" class="filter-select">
-        <option value="all">Všetky náročnosti</option>
-        <option value="zaciatocnik">Začiatočník</option>
-        <option value="pokrocily">Pokročilý</option>
-        <option value="expert">Expert</option>
-    </select>
-
-</div>
-
-<div class="trasy-grid">
-    </div>
-    <div class="trasy-grid">
-        <div class="route-card">
-            <div class="route-card" data-okres="zilina" data-level="zaciatocnik">
-    <span class="badge easy-bg">Začiatočník</span>
-    </div>
+    <main class="trasy-grid" id="trasyGrid">
+        <div class="route-card" data-level="zaciatocnik">
             <span class="badge easy-bg">Začiatočník</span>
-            <img src="https://images.unsplash.com/photo-1473773508845-188df298d2d1" class="route-img" alt="Trasa">
+            <img src="https://static.donio.sk/photos/projects/mini-cropped/f/7/f7397708-8953-4c15-ae0b-e1c51116b7a7.jpg"
+                class="route-img" alt="Trasa Jablunkov">
             <div class="route-content">
-                <h3>Les</h3>
-                <p>okolo lesa.</p>
+                <h3>Lesná cesta v Jablunkove</h3>
+                <div style="color: #f1c40f; margin-bottom: 10px;">★★★★☆</div>
                 <div class="route-meta">
-                    <span>📏 15km</span>
-                    <span>⛰️ 20m</span>
-                    <span>⭐ 4.8</span>
+                    <span>📏 12 km</span>
+                    <span>⏱️ 45 min</span>
+                    <span>⛰️ 50m</span>
                 </div>
-                <a href="trasa.les.html" class="btn-detail">Zobraziť detaily</a>
+                <p>Nenáročná cesta cez les s minimálnym prevýšením.</p>
+                <a href="trasa-jablunkov.html" class="btn-detail">Zobraziť detaily</a>
             </div>
         </div>
 
-        <div class="route-card">
-            <div class="route-card" data-okres="praha" data-level="expert">
-    <span class="badge hard-bg">Expert</span>
-    </div>
-            <span class="badge hard-bg">Pokročilý</span>
-            <img src="https://kamnahory.sk/images/pr/horsky-bicykel.jpg" class="route-img" alt="Trasa">
+        <div class="route-card" data-level="pokrocily">
+            <span class="badge medium-bg">Pokročilý</span>
+            <img src="https://images.mtbiker.sk/clanky/src/kubinka_00_6160a188a4cbd.jpg" class="route-img"
+                alt="Trasa Kubínska">
             <div class="route-content">
-                <h3>Hory</h3>
-                <p>Technický terén pre horské bicykle.</p>
+                <h3>Kubínska Hoľa Trail</h3>
+                <div style="color: #f1c40f; margin-bottom: 10px;">★★★★★</div>
                 <div class="route-meta">
-                    <span>📏 42km</span>
-                    <span>⛰️ 1200m</span>
-                    <span>⭐ 5.0</span>
+                    <span>📏 34 km</span>
+                    <span>⏱️ 2.5 h</span>
+                    <span>⛰️ 420m</span>
                 </div>
-                <a href="#" class="btn-detail">Zobraziť detaily</a>
+                <p>Kombinácia hôr a lesných ciest s krásnymi výhľadmi.</p>
+                <a href="trasa-kubinska.html" class="btn-detail">Zobraziť detaily</a>
             </div>
         </div>
-        
+
+        <div class="route-card" data-level="expert">
+            <span class="badge hard-bg">Expert</span>
+            <img src="https://www.restartnisa.sk/wp-content/uploads/2023/06/tajnatrail-01.webp" class="route-img"
+                alt="Trasa Karpaty">
+            <div class="route-content">
+                <h3>Okolie Malých Karpát</h3>
+                <div style="color: #f1c40f; margin-bottom: 10px;">★★★★☆</div>
+                <div class="route-meta">
+                    <span>📏 68 km</span>
+                    <span>⏱️ 5.0 h</span>
+                    <span>⛰️ 1850m</span>
+                </div>
+                <p>Strmé stúpania a technické zjazdy pre náročných.</p>
+                <a href="trasa-karpaty.html" class="btn-detail">Zobraziť detaily</a>
+            </div>
         </div>
-        <script>
-    const filterOkres = document.getElementById('filter-okres');
-    const filterLevel = document.getElementById('filter-level');
-    const cards = document.querySelectorAll('.route-card');
 
-    function filterRoutes() {
-        const selectedOkres = filterOkres.value;
-        const selectedLevel = filterLevel.value;
+        <div class="route-card" data-level="pokrocily">
+            <span class="badge medium-bg">Pokročilý</span>
+            <img src="https://www.restartnisa.sk/wp-content/uploads/2017/01/sulovhradna-108.webp" class="route-img"
+                alt="Sulov">
+            <div class="route-content">
+                <h3>Okruh Súľovské skaly</h3>
+                <div style="color: #f1c40f; margin-bottom: 10px;">★★★★★</div>
+                <div class="route-meta">
+                    <span>📏 18 km</span>
+                    <span>⏱️ 2.0 h</span>
+                    <span>⛰️ 580m</span>
+                </div>
+                <p>Lokalita: Bytča. Úchvatné výhľady na skalné mesto.</p>
+                <a href="trasa-sulov.html" class="btn-detail">Zobraziť detaily</a>
+            </div>
+        </div>
 
-        cards.forEach(card => {
-            const cardOkres = card.getAttribute('data-okres');
-            const cardLevel = card.getAttribute('data-level');
+        <div class="route-card" data-level="zaciatocnik">
+            <span class="badge easy-bg">Začiatočník</span>
+            <img src="https://www.dolne-rakusko.info/data/_noew/mediadb/cms_pictures/%7B09dacb6c-9fb0-0ab8-5913-054e2fc778ca%7D.jpg"
+                class="route-img" alt="Hradza">
+            <div class="route-content">
+                <h3>Dunajská cyklotrasa</h3>
+                <div style="color: #f1c40f; margin-bottom: 10px;">★★★☆☆</div>
+                <div class="route-meta">
+                    <span>📏 45 km</span>
+                    <span>⏱️ 2.5 h</span>
+                    <span>⛰️ 10m</span>
+                </div>
+                <p>Lokalita: Bratislava - Čunovo. Totálna rovina popri Dunaji.</p>
+                <a href="trasa-hradza.html" class="btn-detail">Zobraziť detaily</a>
+            </div>
+        </div>
 
-            // Logika: Zobraz kartu len ak sa zhoduje okres AJ náročnosť (alebo je vybraté "all")
-            const matchesOkres = (selectedOkres === 'all' || selectedOkres === cardOkres);
-            const matchesLevel = (selectedLevel === 'all' || selectedLevel === cardLevel);
+        <div class="route-card" data-level="expert">
+            <span class="badge hard-bg">Expert</span>
+            <img src="https://cyklo.horehronie.sk/images/trasa014/kral_hola_2.jpg" class="route-img" alt="Kralova Hola">
+            <div class="route-content">
+                <h3>Kráľova Hoľa: rozhľadňa</h3>
+                <div style="color: #f1c40f; margin-bottom: 10px;">★★★★★</div>
+                <div class="route-meta">
+                    <span>📏 12 km</span>
+                    <span>⏱️ 3.5 h</span>
+                    <span>⛰️ 1050m</span>
+                </div>
+                <p>Lokalita: Šumiac. Najvyšší cyklistický bod na Slovensku.</p>
+                <a href="trasa-kralova-hola.html" class="btn-detail">Zobraziť detaily</a>
+            </div>
+        </div>
 
-            if (matchesOkres && matchesLevel) {
-                card.style.display = 'block'; // Zobraziť
-            } else {
-                card.style.display = 'none'; // Schovať
-            }
-        });
-    }
+        <div class="route-card" data-level="zaciatocnik">
+            <span class="badge easy-bg">Začiatočník</span>
+            <img src="https://d48-a.sdn.cz/d_48/c_img_m3_A/nb4N2OmYQDdw4uSfBc1B4Y/4c48.jpeg" class="route-img"
+                alt="Praha">
+            <div class="route-content">
+                <h3>Park Prahy</h3>
+                <div style="color: #f1c40f; margin-bottom: 10px;">★★★★☆</div>
+                <div class="route-meta">
+                    <span>📏 15 km</span>
+                    <span>⏱️ 1.0 h</span>
+                    <span>⛰️ 50m</span>
+                </div>
+                <p>Lokalita: Praha 7. Pohodová jazda s výhľadom na mesto.</p>
+                <a href="trasa-stromovka.html" class="btn-detail">Zobraziť detaily</a>
+            </div>
+        </div>
 
-    filterOkres.addEventListener('change', filterRoutes);
-    filterLevel.addEventListener('change', filterRoutes);
-</script>
+        <div class="route-card" data-level="pokrocily">
+            <span class="badge medium-bg">Pokročilý</span>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRINs8Q2VqMh-73__QsP9UJcaNelEAK1mu3MQ&s"
+                class="route-img" alt="Pustevny">
+            <div class="route-content">
+                <h3>Pustevny a Radhošť</h3>
+                <div style="color: #f1c40f; margin-bottom: 10px;">★★★★★</div>
+                <div class="route-meta">
+                    <span>📏 22 km</span>
+                    <span>⏱️ 2.5 h</span>
+                    <span>⛰️ 620m</span>
+                </div>
+                <p>Lokalita: Trojanovice. Kultové miesto Beskýd.</p>
+                <a href="trasa-pustevny.html" class="btn-detail">Zobraziť detaily</a>
+            </div>
+        </div>
+
+        <div class="route-card" data-level="pokrocily">
+            <span class="badge medium-bg">Pokročilý</span>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRz-wFFmC1ti7NBTQWKPl8pLGi9Y9kwCRGePQ&s"
+                class="route-img" alt="Terchova">
+            <div class="route-content">
+                <h3>Jánošíkov kraj</h3>
+                <div style="color: #f1c40f; margin-bottom: 10px;">★★★★☆</div>
+                <div class="route-meta">
+                    <span>📏 30 km</span>
+                    <span>⏱️ 3.0 h</span>
+                    <span>⛰️ 750m</span>
+                </div>
+                <p>Lokalita: Terchová. Kopcovitý terén Malej Fatry.</p>
+                <a href="trasa-terchova.html" class="btn-detail">Zobraziť detaily</a>
+            </div>
+        </div>
+
+        <div class="route-card" data-level="pokrocily">
+            <span class="badge medium-bg">Pokročilý</span>
+            <img src="https://includes.mtbiker.sk/images/metaImages/mtbikerShop.png" class="route-img" alt="Devin">
+            <div class="route-content">
+                <h3>Nad Devínskou Kobylou</h3>
+                <div style="color: #f1c40f; margin-bottom: 10px;">★★★★☆</div>
+                <div class="route-meta">
+                    <span>📏 14 km</span>
+                    <span>⏱️ 1.5 h</span>
+                    <span>⛰️ 380m</span>
+                </div>
+                <p>Lokalita: Bratislava - Devín. Najvyšší bod Bratislavy.</p>
+                <a href="trasa-devin.html" class="btn-detail">Zobraziť detaily</a>
+            </div>
+        </div>
+
+        <div class="route-card" data-level="zaciatocnik">
+            <span class="badge easy-bg">Začiatočník</span>
+            <img src="https://www.visitliptov.sk/wp-content/uploads/2025/03/LIPTOVSKA-MARA_priehradny-mur_kocr_2023_Kohler-15.jpg"
+                class="route-img" alt="Mary">
+            <div class="route-content">
+                <h3>Okolo Liptovskej Mary</h3>
+                <div style="color: #f1c40f; margin-bottom: 10px;">★★★★☆</div>
+                <div class="route-meta">
+                    <span>📏 52 km</span>
+                    <span>⏱️ 4.0 h</span>
+                    <span>⛰️ 150m</span>
+                </div>
+                <p>Lokalita: Liptovský Mikuláš. Príjemná jazda okolo jazera.</p>
+                <a href="trasa-mara.html" class="btn-detail">Zobraziť detaily</a>
+            </div>
+        </div>
+
+        <div class="route-card" data-level="expert">
+            <span class="badge hard-bg">Expert</span>
+            <img src="https://alis.zazitky.cz/data/images/gallery/w2080/cyklokurz-krkonose-3d8a516d5c.jpg"
+                class="route-img" alt="Krkonose">
+            <div class="route-content">
+                <h3>Krkonošské traily</h3>
+                <div style="color: #f1c40f; margin-bottom: 10px;">★★★★★</div>
+                <div class="route-meta">
+                    <span>📏 20 km</span>
+                    <span>⏱️ 2.5 h</span>
+                    <span>⛰️ 900m</span>
+                </div>
+                <p>Lokalita: Krkonoše. Drsná horská cyklistika v ČR.</p>
+                <a href="trasa-krkonose.html" class="btn-detail">Zobraziť detaily</a>
+            </div>
+        </div>
+
+        <div class="route-card" data-level="pokrocily">
+            <span class="badge medium-bg">Pokročilý</span>
+            <img src="https://images.mtbiker.sk/clanky/src/raj_5ef07cdf067ee.jpg" class="route-img" alt="Raj">
+            <div class="route-content">
+                <h3>Slovenský Raj (Juh)</h3>
+                <div style="color: #f1c40f; margin-bottom: 10px;">★★★★☆</div>
+                <div class="route-meta">
+                    <span>📏 28 km</span>
+                    <span>⏱️ 3.0 h</span>
+                    <span>⛰️ 450m</span>
+                </div>
+                <p>Lokalita: Dedinky. Prechod cez lesné cestičky raja.</p>
+                <a href="trasa-raj-juh.html" class="btn-detail">Zobraziť detaily</a>
+            </div>
+        </div>
+
+        <div class="route-card" data-level="pokrocily">
+            <span class="badge medium-bg">Pokročilý</span>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnpW3-v6N3Xkz6ZwvxFnqVA9TmXcV9HxkfgA&s"
+                class="route-img" alt="Cicmany">
+            <div class="route-content">
+                <h3>Čičmianske kopčeky</h3>
+                <div style="color: #f1c40f; margin-bottom: 10px;">★★★★☆</div>
+                <div class="route-meta">
+                    <span>📏 35 km</span>
+                    <span>⏱️ 3.5 h</span>
+                    <span>⛰️ 820m</span>
+                </div>
+                <p>Lokalita: Čičmany. Tradičná dedina a horský terén.</p>
+                <a href="trasa-cicmany.html" class="btn-detail">Zobraziť detaily</a>
+            </div>
+        </div>
+
+        <div class="route-card" data-level="expert">
+            <span class="badge hard-bg">Expert</span>
+            <img src="https://images.mtbiker.sk/clanky/src/titulka_00_646608662222a.jpg" class="route-img"
+                alt="Vysocina">
+            <div class="route-content">
+                <h3>Nové Město na Moravě</h3>
+                <div style="color: #f1c40f; margin-bottom: 10px;">★★★★★</div>
+                <div class="route-meta">
+                    <span>📏 10 km</span>
+                    <span>⏱️ 1.0 h</span>
+                    <span>⛰️ 300m</span>
+                </div>
+                <p>Lokalita: Vysočina. Svetové traily pre profíkov.</p>
+                <a href="trasa-vysocina.html" class="btn-detail">Zobraziť detaily</a>
+            </div>
+        </div>
+
+        <div class="route-card" data-level="zaciatocnik">
+            <span class="badge easy-bg">Začiatočník</span>
+            <img src="https://www.panorama.sk/images/pict/20821.jpg" class="route-img" alt="Orava">
+            <div class="route-content">
+                <h3>Oravská Priehrada</h3>
+                <div style="color: #f1c40f; margin-bottom: 10px;">★★★☆☆</div>
+                <div class="route-meta">
+                    <span>📏 25 km</span>
+                    <span>⏱️ 2.0 h</span>
+                    <span>⛰️ 40m</span>
+                </div>
+                <p>Lokalita: Námestovo. Pohodová jazda okolo vody.</p>
+                <a href="trasa-orava.html" class="btn-detail">Zobraziť detaily</a>
+            </div>
+        </div>
+
+        <div class="route-card" data-level="zaciatocnik">
+            <span class="badge easy-bg">Začiatočník</span>
+            <img src="https://www.visitostrava.eu/images_firmy/310_4-halda-ema-stefan-spic-jpg.jpeg" class="route-img"
+                alt="Ostrava">
+            <div class="route-content">
+                <h3>Traily Halda Ema</h3>
+                <div style="color: #f1c40f; margin-bottom: 10px;">★★★★☆</div>
+                <div class="route-meta">
+                    <span>📏 8 km</span>
+                    <span>⏱️ 0.5 h</span>
+                    <span>⛰️ 120m</span>
+                </div>
+                <p>Lokalita: Ostrava. Unikátny výhľad na priemyselnú oblasť.</p>
+                <a href="trasa-ema.html" class="btn-detail">Zobraziť detaily</a>
+            </div>
+        </div>
+
+        <div class="route-card" data-level="pokrocily">
+            <span class="badge medium-bg">Pokročilý</span>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8FKiUBPodDOjHXUFVsoqrs3aVmMqZv6A6jQ&s"
+                class="route-img" alt="Kvacany">
+            <div class="route-content">
+                <h3>Oblazy - Kvačany</h3>
+                <div style="color: #f1c40f; margin-bottom: 10px;">★★★★★</div>
+                <div class="route-meta">
+                    <span>📏 20 km</span>
+                    <span>⏱️ 2.5 h</span>
+                    <span>⛰️ 450m</span>
+                </div>
+                <p>Lokalita: Liptov. Historické mlyny a krásna príroda.</p>
+                <a href="trasa-kvacany.html" class="btn-detail">Zobraziť detaily</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p style="font-weight: 800; margin-bottom: 10px;">BEYOND THE BIKE TRAILS</p>
+        <p style="opacity: 0.6; font-size: 0.9rem;">© 2026 Všetky práva vyhradené. Jazdite bezpečne!</p>
+    </footer>
+
+    <script>
+        const menuBtn = document.getElementById('menuBtn');
+        const sideMenu = document.getElementById('sideMenu');
+        const overlay = document.getElementById('overlay');
+
+        function toggleMenu() {
+            sideMenu.classList.toggle('open');
+            overlay.classList.toggle('active');
+        }
+
+        menuBtn.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', toggleMenu);
+
+
+        const filterSelect = document.getElementById('filter-level');
+        const routeCards = document.querySelectorAll('.route-card');
+
+        function filterRoutes() {
+            const selectedValue = filterSelect.value;
+
+            routeCards.forEach(card => {
+                const cardLevel = card.getAttribute('data-level');
+
+                if (selectedValue === 'all' || selectedValue === cardLevel) {
+
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        filterSelect.addEventListener('change', filterRoutes);
+    </script>
+
 </body>
+
 </html>

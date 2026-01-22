@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <title>Lesík v Jablunkove | Detail trasy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2d6a4f;
+            --dark: #1b4332;
+            --bg: #f8f9fa;
+            --white: #ffffff;
+            --text: #2d3436;
+            --shadow: 0 10px 30px rgba(0,0,0,0.08);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background: var(--bg); color: var(--text); padding-top: 100px; scroll-behavior: smooth; }
+
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+
+        /* HEADER TRASY */
+        .route-header { text-align: center; margin-bottom: 40px; }
+        .back-link { display: inline-block; margin-bottom: 15px; color: var(--primary); text-decoration: none; font-weight: 700; transition: 0.3s; }
+        .back-link:hover { transform: translateX(-5px); }
+        .route-header h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; color: var(--dark); }
+
+        /* HLAVNÝ OBRÁZOK */
+        .main-img-container { position: relative; width: 100%; height: 450px; border-radius: 40px; overflow: hidden; box-shadow: var(--shadow); margin-bottom: 40px; }
+        .main-img-container img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* INFORMAČNÉ OKIENKA (GRID) */
+        .info-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 20px; 
+            margin-bottom: 40px; 
+        }
+        .info-card { 
+            background: var(--white); 
+            padding: 30px; 
+            border-radius: 25px; 
+            text-align: center; 
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(0,0,0,0.03);
+        }
+        .info-card span { display: block; font-size: 0.8rem; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px; }
+        .info-card p { font-size: 1.4rem; font-weight: 800; color: var(--dark); }
+
+        /* OBSAH / POPIS */
+        .description-section { 
+            background: var(--white); 
+            padding: 50px; 
+            border-radius: 40px; 
+            box-shadow: var(--shadow);
+            margin-bottom: 60px;
+            line-height: 1.8;
+        }
+        .description-section h2 { margin-bottom: 25px; font-weight: 800; color: var(--dark); }
+        .description-section p { margin-bottom: 20px; color: #555; font-size: 1.1rem; }
+
+        /* BACK TO TOP TLAČIDLO */
+        #backToTop {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 55px;
+            height: 55px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 18px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: none; /* Skryté na začiatku */
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: var(--transition);
+            box-shadow: 0 10px 20px rgba(45, 106, 79, 0.3);
+        }
+        #backToTop:hover { background: var(--dark); transform: translateY(-5px); }
+
+        /* FOOTER */
+        footer { background: var(--dark); color: white; padding: 60px 20px; text-align: center; }
+
+        @media (max-width: 768px) {
+            .description-section { padding: 30px; }
+            .main-img-container { height: 300px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header class="route-header">
+            <a href="trasy.html" class="back-link">← SPÄŤ NA TRASY</a>
+            <h1>Lesík v Jablunkove</h1>
+        </header>
+
+        <div class="main-img-container">
+            <img src="https://foto.mtbiker.sk/Trasy/2025/najlepsie_mtb_jazdenie_u_nas/03_1756562626.jpg" alt="Trasa v Jablunkove">
+        </div>
+
+        <section class="info-grid">
+            <div class="info-card">
+                <span>Dĺžka trasy</span>
+                <p>12.4 km</p>
+            </div>
+            <div class="info-card">
+                <span>Prevýšenie</span>
+                <p>50 m</p>
+            </div>
+            <div class="info-card">
+                <span>Odhadovaný čas</span>
+                <p>45 min</p>
+            </div>
+            <div class="info-card">
+                <span>Náročnosť</span>
+                <p>Ľahká</p>
+            </div>
+        </section>
+
+        <article class="description-section">
+            <h2>Podrobné informácie</h2>
+            <p>Táto trasa predstavuje ideálnu voľbu pre cyklistov, ktorí hľadajú oddych a relax v prírode bez náročného stúpania. Cesta začína priamo v Jablunkove a plynule prechádza do hustého ihličnatého lesa, ktorý poskytuje príjemný tieň aj počas horúcich letných dní.</p>
+            
+            <p>Povrch je z väčšej časti spevnený, čo umožňuje jazdu na horských, ale aj trekingových bicykloch. Trasa kopíruje tok rieky, takže profil je takmer rovinatý. Je to skvelý tip na rodinný výlet, kde si na svoje prídu aj tí najmenší cyklisti.</p>
+            
+            <p>Počas jazdy narazíte na niekoľko vybudovaných ohnísk a lavičiek, ktoré priam pozývajú na krátku pauzu. Odporúčame sledovať značenie lesnej správy, ktoré vás bezpečne prevedie celým okruhom späť do východiskového bodu.</p>
+        </article>
+    </div>
+
+    <button id="backToTop" title="Hore">↑</button>
+
+    <footer>
+        <p style="font-weight: 800; margin-bottom: 10px;">BEYOND THE BIKE TRAILS</p>
+        <p style="opacity: 0.6; font-size: 0.9rem;">© 2026 Všetky práva vyhradené.</p>
+    </footer>
+
+    <script>
+        // Logika pre Back to Top tlačidlo
+        const bttButton = document.getElementById("backToTop");
+
+        window.onscroll = function() {
+            // Ak používateľ odroluje o viac ako 400px, zobrazíme tlačidlo
+            if (document.body.scrollTop > 400 || document.documentElement.scrollTop > 400) {
+                bttButton.style.display = "flex";
+            } else {
+                bttButton.style.display = "none";
+            }
+        };
+
+        bttButton.addEventListener("click", function() {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        });
+    </script>
+
+</body>
+</html>
