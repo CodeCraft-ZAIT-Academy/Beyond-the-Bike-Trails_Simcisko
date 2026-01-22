@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="sk">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Galéria | Beyond the Bike Trails</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="overlay" id="overlay"></div>
+
+    <header class="top-bar">
+        <div class="logo-area">
+            <div class="menu-icon" id="menuBtn">☰</div>
+            <a href="index.html" style="text-decoration: none;">
+                <h1 style="font-size: 1.1rem; font-weight: 800; color: var(--dark); letter-spacing: 1px;">BTB TRAILS
+                </h1>
+            </a>
+        </div>
+    </header>
+
+    <nav class="side-menu" id="sideMenu">
+        <a href="index.html">Domov</a>
+        <a href="trasy.html">Trasy</a>
+        <a href="kontakt.html">Kontakt</a>
+        <a href="galeria.html">Galéria</a>
+    </nav>
+
+    <main class="gallery-content">
+        <h2 class="section-title">Fotogaléria z ciest</h2>
+
+        <div class="gallery-grid">
+            <div class="gallery-item" onclick="openLightbox(this)">
+                <img src="https://foto.mtbiker.sk/Trasy/2025/najlepsie_mtb_jazdenie_u_nas/03_1756562626.jpg"
+                    alt="Trail 1">
+                <div class="gallery-overlay">Zväčšiť</div>
+            </div>
+            <div class="gallery-item" onclick="openLightbox(this)">
+                <img src="https://www.mtnlovers.sk/kniznica/Paganella/P8170049%20(247).jpg" alt="Trail 2">
+                <div class="gallery-overlay">Zväčšiť</div>
+            </div>
+            <div class="gallery-item" onclick="openLightbox(this)">
+                <img src="https://contenderbicycles.com/cdn/shop/articles/IMG_5104_1_44702178-c513-4b22-ba4b-dc234d69ea68.jpg?v=1717051985&width=1600"
+                    alt="Trail 3">
+                <div class="gallery-overlay">Zväčšiť</div>
+            </div>
+            <div class="gallery-item" onclick="openLightbox(this)">
+                <img src="https://www.canyon.com/on/demandware.static/-/Library-Sites-canyon-shared/default/dw56cfd2a4/images/blog/Mountain/best-place-to-mtb-london-swinley-forest.jpg"
+                    alt="Trail 4">
+                <div class="gallery-overlay">Zväčšiť</div>
+            </div>
+            <div class="gallery-item" onclick="openLightbox(this)">
+                <img src="https://images.mtbiker.sk/clanky/src/titulka_00_64c3785d6413c.jpg" alt="Trail 4">
+                <div class="gallery-overlay">Zväčšiť</div>
+            </div>
+        </div>
+    </main>
+
+    <div class="lightbox" id="lightbox">
+        <span class="close-lightbox" onclick="closeLightbox()">&times;</span>
+        <img id="lightbox-img" src="">
+    </div>
+
+    <footer>
+        <p style="font-weight: 800; margin-bottom: 10px;">BEYOND THE BIKE TRAILS</p>
+        <p style="opacity: 0.6; font-size: 0.9rem;">© 2026 Všetky práva vyhradené. Jazdite bezpečne!</p>
+    </footer>
+    <style>
+        :root {
+            --primary: #2d6a4f;
+            --primary-light: #40916c;
+            --accent: #d4e09b;
+            --dark: #1b4332;
+            --text: #2d3436;
+            --bg: #f8f9fa;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding-top: 80px;
+        }
+
+
+        .top-bar {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            padding: 1rem 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.04);
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .menu-icon {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark);
+        }
+
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 300px;
+            height: 100%;
+            background: var(--dark);
+            padding: 100px 40px;
+            transition: var(--transition);
+            z-index: 1001;
+        }
+
+        .side-menu.open {
+            left: 0;
+        }
+
+        .side-menu a {
+            display: block;
+            padding: 15px 0;
+            color: var(--white);
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 600;
+            transition: var(--transition);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .side-menu a:hover {
+            color: var(--accent);
+            transform: translateX(10px);
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            display: none;
+            z-index: 1000;
+            backdrop-filter: blur(2px);
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+
+        .gallery-content {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            margin-bottom: 40px;
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--dark);
+            text-align: center;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-auto-rows: 250px;
+            gap: 20px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.08);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(27, 67, 50, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: var(--transition);
+            color: white;
+            font-weight: 700;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: 10px;
+        }
+
+        .close-lightbox {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 3rem;
+            cursor: pointer;
+        }
+
+
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            margin-top: 80px;
+        }
+    </style>
+
+
+    <script>
+
+        const menuBtn = document.getElementById('menuBtn');
+        const sideMenu = document.getElementById('sideMenu');
+        const overlay = document.getElementById('overlay');
+
+        function toggleMenu() {
+            sideMenu.classList.toggle('open');
+            overlay.classList.toggle('active');
+        }
+
+        menuBtn.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', toggleMenu);
+
+
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+
+        function openLightbox(element) {
+            lightboxImg.src = element.querySelector('img').src;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+
+        lightbox.addEventListener('click', function (e) {
+            if (e.target !== lightboxImg) closeLightbox();
+        });
+    </script>
+
+</body>
+
+</html>

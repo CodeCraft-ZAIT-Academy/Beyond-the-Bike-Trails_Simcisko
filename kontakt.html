@@ -1,0 +1,252 @@
+
+
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <title>Kontakt | Beyond the Bike Trails</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2d6a4f;
+            --primary-light: #40916c;
+            --accent: #d4e09b;
+            --dark: #1b4332;
+            --text: #2d3436;
+            --bg: #f8f9fa;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(0,0,0,0.08);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        body { 
+            background-color: var(--bg); 
+            color: var(--text); 
+            line-height: 1.6;
+            padding-top: 100px; 
+        }
+
+        
+        .top-bar {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            padding: 1rem 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.04);
+        }
+
+        .logo-area { display: flex; align-items: center; gap: 15px; }
+        .menu-icon { font-size: 1.5rem; cursor: pointer; color: var(--dark); }
+
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 300px;
+            height: 100%;
+            background: var(--dark);
+            padding: 100px 40px;
+            transition: var(--transition);
+            z-index: 1001;
+        }
+        .side-menu.open { left: 0; }
+        .side-menu a {
+            display: block;
+            padding: 15px 0;
+            color: var(--white);
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 600;
+            transition: var(--transition);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .side-menu a:hover { color: var(--accent); transform: translateX(10px); }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            display: none;
+            z-index: 1000;
+            backdrop-filter: blur(2px);
+        }
+        .overlay.active { display: block; }
+
+        
+        .container { 
+            max-width: 1100px; 
+            margin: 40px auto; 
+            padding: 0 20px; 
+            display: grid; 
+            grid-template-columns: 1fr 1.5fr; 
+            gap: 40px; 
+        }
+
+        .contact-info { 
+            background: var(--dark); 
+            color: white; 
+            padding: 40px; 
+            border-radius: 30px; 
+            box-shadow: var(--shadow); 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .contact-info h2 { margin-bottom: 20px; font-size: 2.2rem; font-weight: 800; }
+        .info-item { margin-bottom: 25px; display: flex; align-items: center; gap: 15px; font-size: 1.1rem; }
+        .info-item span { font-size: 1.5rem; }
+
+        .contact-form { 
+            background: white; 
+            padding: 40px; 
+            border-radius: 30px; 
+            box-shadow: var(--shadow); 
+        }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.9rem; color: var(--dark); }
+        input, textarea { 
+            width: 100%; 
+            padding: 15px; 
+            border: 2px solid #f0f0f0; 
+            border-radius: 15px; 
+            font-size: 1rem; 
+            outline: none; 
+            transition: var(--transition); 
+            background: #fdfdfd;
+        }
+        input:focus, textarea:focus { border-color: var(--primary); background: white; }
+
+        .btn-submit { 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            padding: 16px; 
+            border-radius: 100px; 
+            font-weight: 800; 
+            cursor: pointer; 
+            width: 100%; 
+            transition: var(--transition); 
+            letter-spacing: 1px;
+        }
+        .btn-submit:hover { background: var(--dark); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(45, 106, 79, 0.2); }
+
+        
+        .map-section { max-width: 1100px; margin: 40px auto 80px; padding: 0 20px; }
+        .map-card { background: white; padding: 20px; border-radius: 30px; box-shadow: var(--shadow); }
+        .map-card h4 { margin-bottom: 20px; font-weight: 800; color: var(--dark); }
+
+        
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        @media (max-width: 850px) { 
+            .container { grid-template-columns: 1fr; } 
+            body { padding-top: 80px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="overlay" id="overlay"></div>
+
+<header class="top-bar">
+    <div class="logo-area">
+        <div class="menu-icon" id="menuBtn">☰</div>
+        <a href="index.html" style="text-decoration: none;">
+            <h1 style="font-size: 1.1rem; font-weight: 800; color: var(--dark); letter-spacing: 1px;">BTB TRAILS</h1>
+        <h1 style="color: black;">KONTAKT</h1> 
+        </a>
+    </div>
+</header>
+
+<nav class="side-menu" id="sideMenu">
+    <a href="index.html">Domov</a>
+    <a href="trasy.html">Trasy</a>
+    <a href="kontakt.html">Kontakt</a>
+    <a href="galeria.html">Galeria</a>
+</nav>
+
+<main class="container">
+    <div class="contact-info">
+        <h2>Napíšte nám</h2>
+        <p style="opacity: 0.8; margin-bottom: 40px;">Máte otázku k trasám alebo chcete pridať tú svoju? Sme tu pre vás.</p>
+        
+        <div class="info-item"><span>📍</span> Čierne, Slovensko</div>
+        <div class="info-item"><span>📧</span> info_beyondtrails@gmail.com</div>
+        <div class="info-item"><span>📞</span> +421 900 358 123</div>
+    </div>
+
+    <div class="contact-form">
+        <form action="#">
+            <div class="form-group">
+                <label>Vaše meno</label>
+                <input type="text" placeholder="Janko Hraško" required>
+            </div>
+            <div class="form-group">
+                <label>E-mail</label>
+                <input type="email" placeholder="janko@priklad.sk" required>
+            </div>
+            <div class="form-group">
+                <label>Správa</label>
+                <textarea rows="4" placeholder="Ako vám môžeme pomôcť?" required></textarea>
+            </div>
+            <button type="submit" class="btn-submit">ODOSLAŤ SPRÁVU</button>
+        </form>
+    </div>
+</main>
+
+<section class="map-section">
+    <div class="map-card">
+        <h4>Kde nás nájdete – Obec Čierne</h4>
+        <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d10404.99434861864!2d18.8143494!3d49.490159!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47143e5e4e6d78ef%3A0x400f7d1c696e9d0!2zQ8mllcm5l!5e0!3m2!1ssk!2ssk!4v1700000000000"
+            width="100%"
+            height="350"
+            style="border:0; border-radius:20px;"
+            allowfullscreen=""
+            loading="lazy">
+        </iframe>
+    </div>
+</section>
+
+<footer>
+    <p style="font-weight: 800; margin-bottom: 10px;">BEYOND THE BIKE TRAILS</p>
+    <p style="opacity: 0.6; font-size: 0.9rem;">© 2026 Všetky práva vyhradené. Jazdite bezpečne!</p>
+</footer>
+
+<script>
+    const menuBtn = document.getElementById('menuBtn');
+    const sideMenu = document.getElementById('sideMenu');
+    const overlay = document.getElementById('overlay');
+
+    function toggleMenu() {
+        sideMenu.classList.toggle('open');
+        overlay.classList.toggle('active');
+    }
+
+    menuBtn.addEventListener('click', toggleMenu);
+    overlay.addEventListener('click', toggleMenu);
+
+    document.querySelectorAll('.side-menu a').forEach(link => {
+        link.addEventListener('click', () => {
+            sideMenu.classList.remove('open');
+            overlay.classList.remove('active');
+        });
+    });
+</script>
+
+</body>
+</html>
